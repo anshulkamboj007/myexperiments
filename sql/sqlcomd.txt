@@ -1,0 +1,96 @@
+select * from boat
+
+select Price,Boat_Type from boat
+
+select count(Boat_Type),Boat_Type from boat
+group by Boat_Type
+----------------------------add column to db and update values--------------
+alter table boat
+add curr varchar(255)
+
+alter table boat
+add country varchar(255)
+
+alter table boat
+add price_base float
+
+alter table boat
+add euro_price float
+
+update boat
+set price_base=SUBSTRING(Price, 4, LEN(Price) - 3) 
+
+update boat
+set curr=SUBSTRING(Price, 1,3) 
+
+-----------------------------------------------------------------
+
+---------update value in table using case-----
+update boat
+set euro_price =
+(
+CASE  
+WHEN curr='CHF' THEN 1.04*price_base
+WHEN curr='DKK' THEN 0.13*price_base
+WHEN curr='EUR' THEN 1*price_base
+ELSE 
+0.87*price_base
+end
+)
+
+
+--------------------------------------------------
+select curr,avg(price_base) from boat
+group by curr
+
+---------------------------------
+SELECT curr,price_base,
+CASE  
+WHEN curr='CHF' THEN 1.04*price_base
+WHEN curr='DKK' THEN 0.13*price_base
+WHEN curr='EUR' THEN 1*price_base
+ELSE 
+0.87*price_base
+END 
+as europr
+
+FROM boat
+
+--------------------
+alter table boat
+drop column Price
+
+alter table boat
+drop column price_base
+
+alter table boat
+drop column curr
+
+alter table boat
+drop column Location
+
+----------------------------
+DELETE FROM boat 
+    where Year_Built=0
+
+-------------------------------
+select LEFT(Location,CHARINDEX(' ', Location)) from boat
+
+
+SELECT 
+LEFT(Location, CHARINDEX(' ', Location) - 1) AS country
+FROM boat;
+
+update boat
+set country =
+(
+LEFT(Location, CHARINDEX(' ', Location))
+)
+-------------------------------------
+select count(Boat_Type) as no_of_boats,
+Boat_Type 
+,count(Boat_Type) over() as total_boats,
+count(Boat_Type)/(count(Boat_Type) over()) as perc
+FROM boat
+group by Boat_Type
+order by no_of_boats desc
