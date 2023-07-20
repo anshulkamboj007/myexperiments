@@ -94,3 +94,80 @@ count(Boat_Type)/(count(Boat_Type) over()) as perc
 FROM boat
 group by Boat_Type
 order by no_of_boats desc
+
+
+
+
+
+
+
+
+
+
+
+---------------------------pivot----------------------------------
+SELECT 'AverageCost' AS Cost_Sorted_By_boat_type,   
+  [Fishing Boat],[Sport Boat]  
+from
+	(
+	SELECT Boat_Type,euro_price
+	FROM boat
+	) as sourcetable
+PIVOT
+(
+	AVG(euro_price) for Boat_Type in ([Fishing Boat],[Sport Boat]) 
+) AS pivottable
+
+
+-----------------cte----------------------------------------------
+WITH boat_desc (Length, Width, Material,euro_price)
+AS
+
+(
+    SELECT Length, Width, Material,euro_price
+    FROM boat
+
+)
+
+SELECT Length, Width, Material,euro_price
+FROM boat_desc
+where euro_price>5000
+
+
+
+-------------------------------------------------------------------------
+------------------function-------------------------------------------
+CREATE FUNCTION year_cheap_boat(@year smallint)
+RETURNS TABLE 
+AS
+--BEGIN
+RETURN(
+	SELECT Boat_Type,Manufacturer,euro_price,Year_Built
+	FROM boat
+	WHERE Year_Built>@year
+	)
+--END
+
+select * from year_cheap_boat (2000)
+
+DROP FUNCTION  year_cheap_boat
+
+
+
+
+
+
+
+
+-------------------stored procedure query-----------------------------------
+CREATE PROCEDURE year_cheap_boat(@year smallint)
+-- procedure returns the entire row for the given id
+AS BEGIN
+	SELECT Boat_Type,Manufacturer,euro_price,Year_Built
+	FROM boat
+	WHERE Year_Built>@year
+END;
+
+EXEC year_cheap_boat 2000;
+
+DROP PROCEDURE IF EXISTS year_cheap_boat;
