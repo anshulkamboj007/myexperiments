@@ -153,12 +153,6 @@ select * from year_cheap_boat (2000)
 DROP FUNCTION  year_cheap_boat
 
 
-
-
-
-
-
-
 -------------------stored procedure query-----------------------------------
 CREATE PROCEDURE year_cheap_boat(@year smallint)
 -- procedure returns the entire row for the given id
