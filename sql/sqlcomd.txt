@@ -23,6 +23,10 @@ set price_base=SUBSTRING(Price, 4, LEN(Price) - 3)
 update boat
 set curr=SUBSTRING(Price, 1,3) 
 
+---------------------drop-----------------------------
+ALTER TABLE world2023
+DROP column Abbreviation
+
 -----------------------------------------------------------------
 
 ---------update value in table using case-----
