@@ -102,11 +102,15 @@ order by no_of_boats desc
 
 
 
-
-
-
-
-
+----------------------------subquery as filter--------------------------------------
+select ram,price_range from MobilePrice
+where ram>
+(
+SELECT avg(ram)
+FROM MobilePrice
+where price_range =3 
+group by price_range
+)
 
 
 ---------------------------pivot----------------------------------
