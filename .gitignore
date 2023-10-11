@@ -11,3 +11,7 @@ s2t/audio-chunks/chunk7.wav
 s2t/audio-chunks/chunk8.wav
 s2t/audio-chunks/chunk9.wav
 s2t/audio-chunks/chunk10.wav
+comp/train_events.csv
+comp/train_series.parquet
+comp/sample_submission.csv
+comp/test_series.parquet
